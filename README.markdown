@@ -83,12 +83,12 @@ node --experimental-vm-modules node_modules/.bin/jest --detectOpenHandles
 
 | Node Version | Invoked Via | Result |
 | ------------ | ----------- | ------ |
-| 16.1.0       | node        | yes    |
-| 16.1.0       | jest        | yes    |
-| 16.1.0       | jest + detectOpenHandles | yes |
-| 16.2.0       | node        | yes    |
-| 16.2.0       | jest        | no     |
-| 16.2.0       | jest  + detectOpenHandles | yes |
+| 16.1.0       | node        | works    |
+| 16.1.0       | jest        | works    |
+| 16.1.0       | jest + detectOpenHandles | works |
+| 16.2.0       | node        | works    |
+| 16.2.0       | jest        | broken   |
+| 16.2.0       | jest  + detectOpenHandles | works |
 
 
 
