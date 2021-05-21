@@ -24,6 +24,8 @@ async function doWork() {
 doWork().then(() => console.log("done"));
 ```
 
+### Invoked via nodejs directly works
+
 This works in nodejs 16.2.0 when invoked directly (we see `value: 1234` twice):
 
 ```
@@ -32,6 +34,8 @@ $ node index.js
 { value: '1234' }
 done
 ```
+
+### Invoked via jest doesn't work
 
 However, when running the same code snippet in (see `index.test.js`) via jest:
 
@@ -52,9 +56,43 @@ node --experimental-vm-modules node_modules/.bin/jest
       at index.test.js:15:19
 ```
 
-
 The 2nd `asl.getStore()` returns `undefined`.
 
-When using node 16.1.0, both invoke-`node`-directly and invoke-via-Jest work and have the same behavior.
+### Invoke via jest + `detectOpenHandles` does works
+
+Note that running Jest _and_ `detectOpenHandles` restores the behavior:
+
+```
+node --experimental-vm-modules node_modules/.bin/jest --detectOpenHandles
+ PASS  ./index.test.js
+  asl
+    ✓ works (17 ms)
+
+  console.log
+    { value: '1234' }
+
+      at index.test.js:13:19
+
+  console.log
+    { value: '1234' }
+
+      at index.test.js:15:19
+```
+
+## Working vs. Broken Matrix
+
+| Node Version | Invoked Via | Result |
+| ------------ | ----------- | ------ |
+| 16.1.0       | node        | yes    |
+| 16.1.0       | jest        | yes    |
+| 16.1.0       | jest + detectOpenHandles | yes |
+| 16.2.0       | node        | yes    |
+| 16.2.0       | jest        | no     |
+| 16.2.0       | jest  + detectOpenHandles | yes |
+
+
+
+
+
 
 
